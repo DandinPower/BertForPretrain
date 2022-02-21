@@ -26,8 +26,8 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
     net = nn.DataParallel(net, device_ids=devices).to(devices[0])
     trainer = torch.optim.Adam(net.parameters(), lr=0.01)
     step, timer = 0, Timer()
-    animator = Animator(xlabel='step', ylabel='loss',
-                            xlim=[1, num_steps], legend=['mlm', 'nsp'])
+    #animator = Animator(xlabel='step', ylabel='loss',
+    #                        xlim=[1, num_steps], legend=['mlm', 'nsp'])
     # 遮蔽语言模型损失的和，下一句预测任务损失的和，句子对的数量，计数
     metric = Accumulator(4)
     num_steps_reached = False
@@ -57,8 +57,8 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
             trainer.step()
             metric.add(mlm_l, nsp_l, tokens_X.shape[0], 1)
             timer.stop()
-            animator.add(step + 1,
-                         (metric[0] / metric[3], metric[1] / metric[3]))
+            #animator.add(step + 1,
+            #             (metric[0] / metric[3], metric[1] / metric[3]))
             step += 1
             if step == num_steps:
                 num_steps_reached = True
