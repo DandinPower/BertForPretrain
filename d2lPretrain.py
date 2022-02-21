@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from d2l import torch as d2l
-from d2lDataset import load_data_wiki
+from d2lDataset import load_data_wiki_2
 from models.BertModel import *
 
 #@save
@@ -78,7 +78,7 @@ def get_bert_encoding(net, tokens_a, tokens_b=None):
     return encoded_X
 
 batch_size, max_len = 512, 64
-train_iter, vocab = load_data_wiki('./data/wikidata/data.txt',batch_size, max_len)
+train_iter, vocab = load_data_wiki_2('./wikidata/data.txt',batch_size, max_len)
 
 net = BERTModel(len(vocab), num_hiddens=128, norm_shape=[128],
                     ffn_num_input=128, ffn_num_hiddens=256, num_heads=2,
