@@ -158,7 +158,7 @@ class _WikiTextDataset(torch.utils.data.Dataset):
         return len(self.all_token_ids)
 
 #@save
-def load_data_wiki(datapath,batch_size, max_len):
+def load_data_wiki_2(datapath,batch_size, max_len):
     """加载WikiText-2数据集"""
     num_workers = d2l.get_dataloader_workers()
     data_dir = d2l.download_extract('wikitext-2', 'wikitext-2')
@@ -170,7 +170,7 @@ def load_data_wiki(datapath,batch_size, max_len):
 
 def main():
     batch_size, max_len = 512, 64
-    train_iter, vocab = load_data_wiki('./data/wikitext-2/wiki.train.tokens',batch_size, max_len)
+    train_iter, vocab = load_data_wiki_2('./data/wikitext-2/wiki.train.tokens',batch_size, max_len)
     print(train_iter)
     for (tokens_X, segments_X, valid_lens_x, pred_positions_X, mlm_weights_X,
         mlm_Y, nsp_y) in train_iter:
@@ -179,7 +179,7 @@ def main():
             nsp_y.shape)
         break
     print(len(vocab))
-    train_iter, vocab = load_data_wiki('./data/wikidata/data.txt',batch_size, max_len)
+    train_iter, vocab = load_data_wiki_2('./data/wikidata/data.txt',batch_size, max_len)
     print(train_iter)
     for (tokens_X, segments_X, valid_lens_x, pred_positions_X, mlm_weights_X,
         mlm_Y, nsp_y) in train_iter:
