@@ -64,6 +64,41 @@ from torch.nn import functional as F
 from torch.utils import data
 from torchvision import transforms
 
+class MemoryRecord:
+    def __init__(self):
+        self.data = []
+        self.process = psutil.Process(os.getpid())
+    
+    def AddCheckPoint(self):
+        self.data.append(self.process.memory_info()[0])
+
+    def GetDifferent(self,a,b):
+        return self.data[b] - self.data[a]
+    
+    def ShowDifferent(self,a,b):
+        print(f'different {a},{b}: {self.data[b]- self.data[a]}bytes')
+
+    def ShowRecord(self,a):
+        print(f'CheckPoint: {self.data[a]}')
+    
+    def ShowNums(self):
+        print(f'Record Nums: {len(self.data)}')
+
+    def ShowDetail(self):
+        if (len(self.data) == 0):
+            print('There is No Record!')
+            return 
+        for i in range(len(self.data)):
+            print()
+            print(f'MemoryRecord[{i}] size is {self.data[i]}bytes, {self.data[i]/1024}kbs, {self.data[i]/(1024*1024)}mbs')
+            if (i != 0):
+                different = self.data[i] - self.data[i-1]
+                print(f'different with [{i - 1}] size is {different}bytes, {different/1024}kbs, {different/(1024*1024)}mbs')
+    
+    def ClearRecord(self):
+        self.data.clear()
+
+
 def use_svg_display():
     """Use the svg format to display a plot in Jupyter.
 
