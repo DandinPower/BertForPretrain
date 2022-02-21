@@ -23,6 +23,9 @@ def _get_batch_loss_bert(net, loss, vocab_size, tokens_X,
     return mlm_l, nsp_l, l
 
 def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
+    
+    p = psutil.Process()
+    
     net = nn.DataParallel(net, device_ids=devices).to(devices[0])
     trainer = torch.optim.Adam(net.parameters(), lr=0.01)
     step, timer = 0, Timer()
@@ -32,6 +35,10 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
     metric = Accumulator(4)
     num_steps_reached = False
     while step < num_steps and not num_steps_reached:
+        
+        print(p.io_counters())
+        prev_read = p.io_counters()[2]
+        prev_write = p.io_counters()[3]
         for tokens_X, segments_X, valid_lens_x, pred_positions_X,\
             mlm_weights_X, mlm_Y, nsp_y in train_iter:
             '''
@@ -63,6 +70,10 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
             if step == num_steps:
                 num_steps_reached = True
                 break
+        now_read = p.io_counters()[2]
+        now_write = p.io_counters()[3]
+        print(f'單次epoch的讀取總計: {(now_read - prev_read)/1024}kbs')
+        print(f'單次epoch的寫入總計: {(now_write - prev_write)/1024}kbs')
 
     print(f'MLM loss {metric[0] / metric[3]:.3f}, '
           f'NSP loss {metric[1] / metric[3]:.3f}')
@@ -78,7 +89,7 @@ def get_bert_encoding(net, tokens_a, tokens_b=None):
     return encoded_X
 
 batch_size, max_len = 512, 64
-train_iter, vocab = load_data_wiki_2('./wikidata/data.txt',batch_size, max_len)
+train_iter, vocab = load_data_wiki_2('./wikitext-2/wiki.train.tokens',batch_size, max_len)
 
 net = BERTModel(len(vocab), num_hiddens=128, norm_shape=[128],
                     ffn_num_input=128, ffn_num_hiddens=256, num_heads=2,
