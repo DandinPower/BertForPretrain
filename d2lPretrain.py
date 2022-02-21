@@ -3,6 +3,10 @@ from torch import nn
 from d2l import torch as d2l
 from d2lDataset import load_data_wiki_2
 from models.BertModel import *
+import sys 
+import os
+import psutil
+import time
 
 #@save
 def _get_batch_loss_bert(net, loss, vocab_size, tokens_X,
