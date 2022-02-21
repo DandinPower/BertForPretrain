@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from d2l import torch as d2l
 from d2lDataset import load_data_wiki
-from models.Bertmodel import *
+from models.BertModel import *
 
 #@save
 def _get_batch_loss_bert(net, loss, vocab_size, tokens_X,
