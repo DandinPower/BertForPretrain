@@ -163,7 +163,7 @@ def load_data_wiki_2(datapath,batch_size, max_len):
 
 def main():
     batch_size, max_len = 512, 64
-    train_iter, vocab = load_data_wiki_2('./data/wikitext-2/wiki.train.tokens',batch_size, max_len)
+    train_iter, vocab = load_data_wiki_2('./wikitext-2/wiki.train.tokens',batch_size, max_len)
     print(train_iter)
     for (tokens_X, segments_X, valid_lens_x, pred_positions_X, mlm_weights_X,
         mlm_Y, nsp_y) in train_iter:
