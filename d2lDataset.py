@@ -190,7 +190,7 @@ def main():
         print(mlm_Y)
         print('nsp_Y')
         print('/////////////////////')
-        print(nsp_Y)
+        print(nsp_y)
         
         break
     print(len(vocab))
