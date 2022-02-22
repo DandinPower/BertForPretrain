@@ -90,17 +90,17 @@ train_iter, vocab = load_data_wiki_2('./wikitext-2/wiki.train.tokens',batch_size
 
 mr = MemoryRecord()
 mr.AddCheckPoint()
-net = BERTModel(len(vocab), num_hiddens=128, norm_shape=[128],
-                    ffn_num_input=128, ffn_num_hiddens=256, num_heads=2,
-                    num_layers=2, dropout=0.2, key_size=128, query_size=128,
-                    value_size=128, hid_in_features=128, mlm_in_features=128,
-                    nsp_in_features=128)
+net = BERTModel(len(vocab), num_hiddens=768, norm_shape=[768],
+                    ffn_num_input=768, ffn_num_hiddens=256, num_heads=12,
+                    num_layers=12, dropout=0.2, key_size=768, query_size=768,
+                    value_size=768, hid_in_features=768, mlm_in_features=768,
+                    nsp_in_features=768)
 mr.AddCheckPoint()
 mr.ShowDetail()
 devices = try_all_gpus()
 loss = nn.CrossEntropyLoss()
 
-train_bert(train_iter, net, loss, len(vocab), devices, 1000)
+train_bert(train_iter, net, loss, len(vocab), devices, 100000)
 
 tokens_a = ['a', 'crane', 'is', 'flying']
 encoded_text = get_bert_encoding(net, tokens_a)
