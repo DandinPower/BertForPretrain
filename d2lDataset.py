@@ -178,7 +178,7 @@ def main():
         print(segments_X)
         print('valid_lens_x')
         print('/////////////////////')
-        print(valid_lens_X)
+        print(valid_lens_x)
         print('pred_positions_x')
         print('/////////////////////')
         print(pred_positions_X)
