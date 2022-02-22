@@ -170,6 +170,28 @@ def main():
         print(tokens_X.shape, segments_X.shape, valid_lens_x.shape,
             pred_positions_X.shape, mlm_weights_X.shape, mlm_Y.shape,
             nsp_y.shape)
+        print('token_x')
+        print('/////////////////////')
+        print(tokens_X)
+        print('segments_x')
+        print('/////////////////////')
+        print(segments_X)
+        print('valid_lens_x')
+        print('/////////////////////')
+        print(valid_lens_X)
+        print('pred_positions_x')
+        print('/////////////////////')
+        print(pred_positions_X)
+        print('mlm_weights_x')
+        print('/////////////////////')
+        print(mlm_weights_X)
+        print('mlm_Y')
+        print('/////////////////////')
+        print(mlm_Y)
+        print('nsp_Y')
+        print('/////////////////////')
+        print(nsp_Y)
+        
         break
     print(len(vocab))
     '''

@@ -27,9 +27,7 @@ def _get_batch_loss_bert(net, loss, vocab_size, tokens_X,
     return mlm_l, nsp_l, l
 
 def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
-    
     p = psutil.Process()
-    
     net = nn.DataParallel(net, device_ids=devices).to(devices[0])
     trainer = torch.optim.Adam(net.parameters(), lr=0.01)
     step, timer = 0, Timer()
@@ -45,14 +43,6 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
         prev_write = p.io_counters()[3]
         for tokens_X, segments_X, valid_lens_x, pred_positions_X,\
             mlm_weights_X, mlm_Y, nsp_y in train_iter:
-            '''
-            print(f'token_x: {tokens_X}')
-            print(f'segments_x: {segments_X}')
-            print(f'valid_lens_x: {valid_lens_x}')
-            print(f'pred_positions_x: {pred_positions_X}')
-            print(f'mlm_weights_x: {mlm_weights_X}')
-            print(f'mlm_x: {mlm_Y}')
-            print(f'nsp_x: {nsp_y}')'''
             tokens_X = tokens_X.to(devices[0])
             segments_X = segments_X.to(devices[0])
             valid_lens_x = valid_lens_x.to(devices[0])
@@ -110,8 +100,7 @@ mr.ShowDetail()
 devices = try_all_gpus()
 loss = nn.CrossEntropyLoss()
 
-for i in range(100):
-    train_bert(train_iter, net, loss, len(vocab), devices, 10)
+train_bert(train_iter, net, loss, len(vocab), devices, 1000)
 
 tokens_a = ['a', 'crane', 'is', 'flying']
 encoded_text = get_bert_encoding(net, tokens_a)
