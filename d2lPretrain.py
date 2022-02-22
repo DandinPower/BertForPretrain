@@ -76,6 +76,8 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
                 break
         now_read = p.io_counters()[2]
         now_write = p.io_counters()[3]
+        print(f'MLM loss {metric[0] / metric[3]:.3f}, '
+          f'NSP loss {metric[1] / metric[3]:.3f}')
         print(f'單次epoch的讀取總計: {(now_read - prev_read)/1024}kbs')
         print(f'單次epoch的寫入總計: {(now_write - prev_write)/1024}kbs')
 
